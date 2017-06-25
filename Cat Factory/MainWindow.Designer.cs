@@ -258,6 +258,7 @@
             this.BKitty1.TabIndex = 16;
             this.BKitty1.Text = "x1";
             this.BKitty1.UseVisualStyleBackColor = true;
+            this.BKitty1.Click += new System.EventHandler(this.BKitty1_Click);
             // 
             // AKitty1
             // 
@@ -268,6 +269,7 @@
             this.AKitty1.TabIndex = 17;
             this.AKitty1.Text = "x1";
             this.AKitty1.UseVisualStyleBackColor = true;
+            this.AKitty1.Click += new System.EventHandler(this.AKitty1_Click);
             // 
             // ALKitty1
             // 
@@ -278,6 +280,7 @@
             this.ALKitty1.TabIndex = 18;
             this.ALKitty1.Text = "x1";
             this.ALKitty1.UseVisualStyleBackColor = true;
+            this.ALKitty1.Click += new System.EventHandler(this.ALKitty1_Click);
             // 
             // AGKitty1
             // 
@@ -288,6 +291,7 @@
             this.AGKitty1.TabIndex = 19;
             this.AGKitty1.Text = "x1";
             this.AGKitty1.UseVisualStyleBackColor = true;
+            this.AGKitty1.Click += new System.EventHandler(this.AGKitty1_Click);
             // 
             // FKitty10
             // 
@@ -309,6 +313,7 @@
             this.BKitty10.TabIndex = 21;
             this.BKitty10.Text = "x10";
             this.BKitty10.UseVisualStyleBackColor = true;
+            this.BKitty10.Click += new System.EventHandler(this.BKitty10_Click);
             // 
             // AKitty10
             // 
@@ -319,6 +324,7 @@
             this.AKitty10.TabIndex = 22;
             this.AKitty10.Text = "x10";
             this.AKitty10.UseVisualStyleBackColor = true;
+            this.AKitty10.Click += new System.EventHandler(this.AKitty10_Click);
             // 
             // ALKitty10
             // 
@@ -329,6 +335,7 @@
             this.ALKitty10.TabIndex = 23;
             this.ALKitty10.Text = "x10";
             this.ALKitty10.UseVisualStyleBackColor = true;
+            this.ALKitty10.Click += new System.EventHandler(this.ALKitty10_Click);
             // 
             // AGKitty10
             // 
@@ -339,6 +346,7 @@
             this.AGKitty10.TabIndex = 24;
             this.AGKitty10.Text = "x10";
             this.AGKitty10.UseVisualStyleBackColor = true;
+            this.AGKitty10.Click += new System.EventHandler(this.AGKitty10_Click);
             // 
             // FKitty100
             // 
@@ -360,6 +368,7 @@
             this.BKitty100.TabIndex = 26;
             this.BKitty100.Text = "x100";
             this.BKitty100.UseVisualStyleBackColor = true;
+            this.BKitty100.Click += new System.EventHandler(this.BKitty100_Click);
             // 
             // AKitty100
             // 
@@ -370,6 +379,7 @@
             this.AKitty100.TabIndex = 27;
             this.AKitty100.Text = "x100";
             this.AKitty100.UseVisualStyleBackColor = true;
+            this.AKitty100.Click += new System.EventHandler(this.AKitty100_Click);
             // 
             // ALKitty100
             // 
@@ -380,6 +390,7 @@
             this.ALKitty100.TabIndex = 28;
             this.ALKitty100.Text = "x100";
             this.ALKitty100.UseVisualStyleBackColor = true;
+            this.ALKitty100.Click += new System.EventHandler(this.ALKitty100_Click);
             // 
             // AGKitty100
             // 
@@ -390,6 +401,7 @@
             this.AGKitty100.TabIndex = 29;
             this.AGKitty100.Text = "x100";
             this.AGKitty100.UseVisualStyleBackColor = true;
+            this.AGKitty100.Click += new System.EventHandler(this.AGKitty100_Click);
             // 
             // label1
             // 

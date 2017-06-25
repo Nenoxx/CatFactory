@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Numerics;
 
 #pragma warning disable IDE1005 // L'appel de délégué peut être simplifié.
 
@@ -193,36 +194,40 @@ namespace Cat_Factory
         #region Buy_Buttons
         private void Kitty1_Click(object sender, EventArgs e)
         {
-            if (TotalMilk >= _listKitties[0].CurrentPrice)
+            int position = 0;
+
+            if (TotalMilk >= _listKitties[position].CurrentPrice)
             {
                 SemTotalMilk.WaitOne();
-                TotalMilk -= _listKitties[0].CurrentPrice;
-                MPS += _listKitties[0].MilkPerSecond;
+                TotalMilk -= _listKitties[position].CurrentPrice;
+                MPS += _listKitties[position].MilkPerSecond;
                 SemTotalMilk.Release();
-                _listKitties[0].NumberOfKitties++;
+                _listKitties[position].NumberOfKitties++;
 
-                double var = _listKitties[0].CurrentPrice;
+                double var = _listKitties[position].CurrentPrice;
                 KittyPrice.Text = FormatNumber(var);
-                KittyNumber.Text = _listKitties[0].NumberOfKitties.ToString();
+                KittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
             }
         }
 
         private void Kitty10_Click(object sender, EventArgs e)
         {
-            double Cumul = _listKitties[0].CurrentPrice * ((Math.Pow(FACTOR, 10) - 1) / (FACTOR - 1));
+            int position = 0;
+
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 10) - 1) / (FACTOR - 1));
             Cumul = Math.Round(Cumul, 2);
 
             if (TotalMilk >= Cumul)
             {
                 SemTotalMilk.WaitOne();
                 TotalMilk -= Cumul;
-                MPS += _listKitties[0].MilkPerSecond * 10;
+                MPS += _listKitties[position].MilkPerSecond * 10;
                 SemTotalMilk.Release();
-                _listKitties[0].NumberOfKitties += 10;
+                _listKitties[position].NumberOfKitties += 10;
 
-                double var = _listKitties[0].CurrentPrice;
+                double var = _listKitties[position].CurrentPrice;
                 KittyPrice.Text = FormatNumber(var);
-                KittyNumber.Text = _listKitties[0].NumberOfKitties.ToString();
+                KittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
             }
             else
             {
@@ -235,20 +240,377 @@ namespace Cat_Factory
 
         private void Kitty100_Click(object sender, EventArgs e)
         {
-            double Cumul = _listKitties[0].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            int position = 0;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
             Cumul = Math.Round(Cumul, 2);
 
             if (TotalMilk >= Cumul)
             {
                 SemTotalMilk.WaitOne();
                 TotalMilk -= Cumul;
-                MPS += _listKitties[0].MilkPerSecond * 100;
+                MPS += _listKitties[position].MilkPerSecond * 100;
                 SemTotalMilk.Release();
-                _listKitties[0].NumberOfKitties += 100;
+                _listKitties[position].NumberOfKitties += 100;
 
-                double var = _listKitties[0].CurrentPrice;
+                double var = _listKitties[position].CurrentPrice;
                 KittyPrice.Text = FormatNumber(var);
-                KittyNumber.Text = _listKitties[0].NumberOfKitties.ToString();
+                KittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void FKitty1_Click(object sender, EventArgs e)
+        {
+            int position = 1;
+            if (TotalMilk >= _listKitties[position].CurrentPrice)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= _listKitties[position].CurrentPrice;
+                MPS += _listKitties[position].MilkPerSecond;
+                SemTotalMilk.Release();
+                _listKitties[position].NumberOfKitties++;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+        }
+
+        private void FKitty10_Click(object sender, EventArgs e)
+        {
+            int position = 1;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 10) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 10;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 10;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void FKitty100_Click(object sender, EventArgs e)
+        {
+            int position = 1;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 100;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 100;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void BKitty1_Click(object sender, EventArgs e)
+        {
+            int position = 2;
+            if (TotalMilk >= _listKitties[position].CurrentPrice)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= _listKitties[position].CurrentPrice;
+                MPS += _listKitties[position].MilkPerSecond;
+                SemTotalMilk.Release();
+                _listKitties[2].NumberOfKitties++;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+        }
+
+        private void BKitty10_Click(object sender, EventArgs e)
+        {
+            int position = 2;
+
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 10) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 10;
+                SemTotalMilk.Release();
+                _listKitties[position].NumberOfKitties += 10;
+
+                double var = _listKitties[position].CurrentPrice;
+                KittyPrice.Text = FormatNumber(var);
+                KittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void BKitty100_Click(object sender, EventArgs e)
+        {
+            int position = 2;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 100;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 100;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void AKitty1_Click(object sender, EventArgs e)
+        {
+            int position = 3;
+            if (TotalMilk >= _listKitties[position].CurrentPrice)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= _listKitties[position].CurrentPrice;
+                MPS += _listKitties[position].MilkPerSecond;
+                SemTotalMilk.Release();
+                _listKitties[2].NumberOfKitties++;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+        }
+
+        private void AKitty10_Click(object sender, EventArgs e)
+        {
+            int position = 3;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 10;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 10;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void AKitty100_Click(object sender, EventArgs e)
+        {
+            int position = 3;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 100;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 100;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void ALKitty1_Click(object sender, EventArgs e)
+        {
+            int position = 4;
+            if (TotalMilk >= _listKitties[position].CurrentPrice)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= _listKitties[position].CurrentPrice;
+                MPS += _listKitties[position].MilkPerSecond;
+                SemTotalMilk.Release();
+                _listKitties[2].NumberOfKitties++;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+        }
+
+        private void ALKitty10_Click(object sender, EventArgs e)
+        {
+            int position = 4;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 10;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 10;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void ALKitty100_Click(object sender, EventArgs e)
+        {
+            int position = 4;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 100;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 100;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void AGKitty1_Click(object sender, EventArgs e)
+        {
+            int position = 5;
+            if (TotalMilk >= _listKitties[position].CurrentPrice)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= _listKitties[position].CurrentPrice;
+                MPS += _listKitties[position].MilkPerSecond;
+                SemTotalMilk.Release();
+                _listKitties[2].NumberOfKitties++;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+        }
+
+        private void AGKitty10_Click(object sender, EventArgs e)
+        {
+            int position = 5;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 10;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 10;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
+            }
+            else
+            {
+                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
+                EraseError = new Thread(ThreadEraseMessage);
+                EraseError.Name = "Thread Erase Error";
+                EraseError.Start();
+            }
+        }
+
+        private void AGKitty100_Click(object sender, EventArgs e)
+        {
+            int position = 5;
+            double Cumul = _listKitties[position].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
+            Cumul = Math.Round(Cumul, 2);
+
+            if (TotalMilk >= Cumul)
+            {
+                SemTotalMilk.WaitOne();
+                TotalMilk -= Cumul;
+                MPS += _listKitties[position].MilkPerSecond * 100;
+                SemTotalMilk.Release();
+                _listKitties[1].NumberOfKitties += 100;
+
+                double var = _listKitties[position].CurrentPrice;
+                FKittyPrice.Text = FormatNumber(var);
+                FKittyNumber.Text = _listKitties[position].NumberOfKitties.ToString();
             }
             else
             {
@@ -269,8 +631,7 @@ namespace Cat_Factory
 
         private String FormatNumber(double Value)
         {
-            long Nb = (long)Value;
-            //TODO : Replace primitive numerical type (here : long) by a BigInteger object to go beyong quadrillion
+            BigInteger Nb = new BigInteger(Value);
 
             if (Nb < 0)
                 return "";
@@ -278,16 +639,28 @@ namespace Cat_Factory
             {
                 if (Nb >= 1000 && Nb <= 999999)
                     return Nb / 1000 + "." + (Nb % 1000) / 100 + "K"; //Thousands = 10^3
+                //----------------------------------------------------------------------------
                 else if (Nb >= 1000000 && Nb <= 9999999)
                     return Nb / 1000000 + "." + (Nb % 1000000) / 100000 + "M"; //Millions = 10^6
-                else if (Nb >= Math.Pow(10, 9) && Nb <= Math.Pow(10, 12) - 1)
-                    return Math.Round(Nb / Math.Pow(10, 9)) + "." + Math.Round((Nb % Math.Pow(10, 9)) / Math.Pow(10, 8)) + "B"; //Billions = 10^9
-                else if (Nb >= Math.Pow(10, 12) && Nb <= Math.Pow(10, 15) - 1)
-                    return Math.Round(Nb / Math.Pow(10, 12)) + "." + Math.Round((Nb % Math.Pow(10, 12)) / Math.Pow(10, 11)) + "T"; //Trillions = 10^12
-                else if (Nb >= Math.Pow(10, 15) && Nb < Math.Pow(10, 18) - 1)
-                    return Math.Round(Nb / Math.Pow(10, 15)) + "." + Math.Round((Nb % Math.Pow(10, 15)) / Math.Pow(10, 14)) + "Q"; //Quadrillions = 10^15
-
-                //TO DO : ABOVE QUADRILLION (Q)
+                //----------------------------------------------------------------------------
+                else if (Nb >= BigInteger.Pow(10, 9) && Nb <= BigInteger.Pow(10, 12) - 1)
+                    return Nb / BigInteger.Pow(10, 9) + "." + (Nb % BigInteger.Pow(10, 9) / BigInteger.Pow(10, 8)) + "B"; //Billions = 10^9
+                //----------------------------------------------------------------------------
+                else if (Nb >= BigInteger.Pow(10, 12) && Nb <= BigInteger.Pow(10, 15) - 1)
+                    return Nb / BigInteger.Pow(10, 12) + "." + (Nb % BigInteger.Pow(10, 12) / BigInteger.Pow(10, 11)) + "T"; //Trillions = 10^12
+                //----------------------------------------------------------------------------
+                else if (Nb >= BigInteger.Pow(10, 15) && Nb <= BigInteger.Pow(10, 18) - 1)
+                    return Nb / BigInteger.Pow(10, 15) + "." + (Nb % BigInteger.Pow(10, 15)) / BigInteger.Pow(10, 14) + "q"; //Quadrillions = 10^15
+                //----------------------------------------------------------------------------
+                else if (Nb >= BigInteger.Pow(10, 18) && Nb <= BigInteger.Pow(10, 21) - 1)
+                    return Nb / BigInteger.Pow(10, 18) + "." + ((Nb % BigInteger.Pow(10, 18)) / BigInteger.Pow(10, 17)) + "Q"; //Quintillions = 10^18
+                //----------------------------------------------------------------------------
+                else if (Nb >= BigInteger.Pow(10, 21) && Nb <= BigInteger.Pow(10, 24) - 1)
+                    return Nb / BigInteger.Pow(10, 21) + "." + ((Nb % BigInteger.Pow(10, 21)) / BigInteger.Pow(10, 20)) + "s"; //Sextillions = 10^21
+                //----------------------------------------------------------------------------
+                else if (Nb >= BigInteger.Pow(10, 24) && Nb <= BigInteger.Pow(10, 27) - 1)
+                    return Nb / BigInteger.Pow(10, 24) + "." + ((Nb % BigInteger.Pow(10, 24)) / BigInteger.Pow(10, 23)) + "S"; //Septillions = 10^24
+                //----------------------------------------------------------------------------
                 else return Value.ToString();
             }
         }
@@ -338,74 +711,9 @@ namespace Cat_Factory
             }
         }
 
+
         #endregion
 
-        private void FKitty1_Click(object sender, EventArgs e)
-        {
-            if (TotalMilk >= _listKitties[1].CurrentPrice)
-            {
-                SemTotalMilk.WaitOne();
-                TotalMilk -= _listKitties[1].CurrentPrice;
-                MPS += _listKitties[1].MilkPerSecond;
-                SemTotalMilk.Release();
-                _listKitties[1].NumberOfKitties++;
-
-                double var = _listKitties[1].CurrentPrice;
-                FKittyPrice.Text = FormatNumber(var);
-                FKittyNumber.Text = _listKitties[1].NumberOfKitties.ToString();
-            }
-        }
-
-        private void FKitty10_Click(object sender, EventArgs e)
-        {
-            double Cumul = _listKitties[1].CurrentPrice * ((Math.Pow(FACTOR, 10) - 1) / (FACTOR - 1));
-            Cumul = Math.Round(Cumul, 2);
-
-            if (TotalMilk >= Cumul)
-            {
-                SemTotalMilk.WaitOne();
-                TotalMilk -= Cumul;
-                MPS += _listKitties[1].MilkPerSecond * 10;
-                SemTotalMilk.Release();
-                _listKitties[1].NumberOfKitties += 10;
-
-                double var = _listKitties[1].CurrentPrice;
-                FKittyPrice.Text = FormatNumber(var);
-                FKittyNumber.Text = _listKitties[1].NumberOfKitties.ToString();
-            }
-            else
-            {
-                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
-                EraseError = new Thread(ThreadEraseMessage);
-                EraseError.Name = "Thread Erase Error";
-                EraseError.Start();
-            }
-        }
-
-        private void FKitty100_Click(object sender, EventArgs e)
-        {
-            double Cumul = _listKitties[1].CurrentPrice * ((Math.Pow(FACTOR, 100) - 1) / (FACTOR - 1));
-            Cumul = Math.Round(Cumul, 2);
-
-            if (TotalMilk >= Cumul)
-            {
-                SemTotalMilk.WaitOne();
-                TotalMilk -= Cumul;
-                MPS += _listKitties[1].MilkPerSecond * 100;
-                SemTotalMilk.Release();
-                _listKitties[1].NumberOfKitties += 100;
-
-                double var = _listKitties[1].CurrentPrice;
-                FKittyPrice.Text = FormatNumber(var);
-                FKittyNumber.Text = _listKitties[1].NumberOfKitties.ToString();
-            }
-            else
-            {
-                SetErrorLabel("Not enough milk, you need " + FormatNumber(Cumul) + " milk :(");
-                EraseError = new Thread(ThreadEraseMessage);
-                EraseError.Name = "Thread Erase Error";
-                EraseError.Start();
-            }
-        }
+        
     }
 }
